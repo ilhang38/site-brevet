@@ -7,1118 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-/* ===== TOKENS ===== */
-:root {
-  --paper: #FAF7F0;
-  --paper-deep: #F3EFE4;
-  --ink: #1C1814;
-  --ink-soft: #4A4339;
-  --ink-mute: #8A8275;
-  --rule: #E3DDCC;
-  --rule-strong: #C9C0AA;
-  --card: #FFFFFF;
-  --card-shadow: 0 1px 0 rgba(28, 24, 20, 0.04), 0 6px 24px -8px rgba(28, 24, 20, 0.10);
-  --highlight: #FFE9A8;
-
-  /* couleurs d'intercalaires par matière */
-  --maths: #2B4C8C;
-  --maths-soft: #DDE3F0;
-  --fr: #B83A2E;
-  --fr-soft: #F4D9D4;
-  --hg: #A0631A;
-  --hg-soft: #F0E0C7;
-  --emc: #6B4593;
-  --emc-soft: #E5DDF0;
-  --sci: #2A6E4A;
-  --sci-soft: #D2E5D9;
-
-  --ok: #2A6E4A;
-  --warn: #C26000;
-  --bad: #B83A2E;
-
-  --r-sm: 6px;
-  --r: 10px;
-  --r-lg: 16px;
-
-  --shadow-pop: 0 4px 0 rgba(28, 24, 20, 0.08);
-}
-
-[data-theme="dark"] {
-  --paper: #14110D;
-  --paper-deep: #1E1A14;
-  --ink: #F2EBDB;
-  --ink-soft: #B8AE96;
-  --ink-mute: #7C7361;
-  --rule: #2B2620;
-  --rule-strong: #3A332A;
-  --card: #1E1A14;
-  --card-shadow: 0 1px 0 rgba(0,0,0,0.4), 0 6px 24px -8px rgba(0,0,0,0.6);
-  --highlight: #4D3D17;
-
-  --maths: #7CA0E8;
-  --maths-soft: #1E2A45;
-  --fr: #E58578;
-  --fr-soft: #3A1F1B;
-  --hg: #D9A85F;
-  --hg-soft: #3A2C16;
-  --emc: #B898E0;
-  --emc-soft: #2A1F3C;
-  --sci: #6FBC8C;
-  --sci-soft: #163024;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s, color 0.2s;
-  min-height: 100vh;
-}
-
-/* texture papier subtile en light mode */
-[data-theme="light"] body::before {
-  content: "";
-  position: fixed; inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(28,24,20,0.025) 1px, transparent 0);
-  background-size: 24px 24px;
-  z-index: 0;
-}
-
-/* ===== HEADER ===== */
-.header {
-  position: sticky; top: 0;
-  z-index: 100;
-  background: var(--paper);
-  border-bottom: 1px solid var(--rule);
-  backdrop-filter: blur(8px);
-}
-[data-theme="light"] .header { background: rgba(250, 247, 240, 0.92); }
-[data-theme="dark"] .header { background: rgba(20, 17, 13, 0.92); }
-
-.header-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.brand {
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-variation-settings: 'opsz' 36, 'SOFT' 50;
-  font-size: 22px;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  background: none; border: none; color: inherit;
-}
-.brand em {
-  font-style: italic;
-  font-variation-settings: 'opsz' 100, 'SOFT' 100;
-  color: var(--maths);
-}
-
-.header-actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.search-wrap { position: relative; }
-.search {
-  background: var(--paper-deep);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 8px 12px 8px 36px;
-  font-family: inherit;
-  font-size: 14px;
-  color: var(--ink);
-  width: 240px;
-  outline: none;
-  transition: width 0.2s, border-color 0.2s;
-}
-.search:focus { border-color: var(--ink-soft); width: 300px; }
-.search-icon {
-  position: absolute; left: 12px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--ink-mute);
-  pointer-events: none;
-}
-
-.icon-btn {
-  background: var(--paper-deep);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 8px 10px;
-  cursor: pointer;
-  color: var(--ink);
-  font-family: inherit;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: background 0.15s, transform 0.05s;
-}
-.icon-btn:hover { background: var(--rule); }
-.icon-btn:active { transform: translateY(1px); }
-
-/* ===== MAIN ===== */
-.main {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 48px 24px 80px;
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== HOME ===== */
-.hero {
-  margin-bottom: 56px;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 40px;
-}
-.hero-eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  margin-bottom: 16px;
-  font-family: 'JetBrains Mono', monospace;
-}
-.hero-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 144, 'SOFT' 30;
-  font-size: clamp(40px, 6vw, 72px);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  margin-bottom: 24px;
-  max-width: 900px;
-}
-.hero-title em {
-  font-style: italic;
-  font-variation-settings: 'opsz' 144, 'SOFT' 100;
-}
-.hero-title .pct {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  font-size: 0.72em;
-  letter-spacing: -0.04em;
-  background: var(--highlight);
-  padding: 0 8px;
-  border-radius: var(--r-sm);
-  display: inline-block;
-  font-style: normal;
-}
-.hero-sub {
-  font-size: 18px;
-  color: var(--ink-soft);
-  max-width: 640px;
-}
-
-/* ===== Section titles ===== */
-.section {
-  margin-top: 64px;
-}
-.section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 12px;
-}
-.section-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 72;
-  font-size: 28px;
-  letter-spacing: -0.01em;
-}
-.section-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--ink-mute);
-  letter-spacing: 0.04em;
-}
-
-/* ===== Subject cards (intercalaires de classeur) ===== */
-.subjects {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-}
-.subject-card {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 24px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  text-align: left;
-  font-family: inherit;
-  color: var(--ink);
-  display: block;
-  width: 100%;
-}
-.subject-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--card-shadow);
-}
-.subject-card::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0;
-  width: 4px; height: 100%;
-  background: var(--subject-color);
-}
-.subject-card .tab {
-  position: absolute;
-  top: 24px;
-  right: -1px;
-  background: var(--subject-color);
-  color: white;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  padding: 4px 10px 4px 12px;
-  border-radius: var(--r-sm) 0 0 var(--r-sm);
-  font-weight: 600;
-}
-.subject-card h3 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 60;
-  font-size: 26px;
-  letter-spacing: -0.01em;
-  margin-bottom: 6px;
-  color: var(--subject-color);
-}
-.subject-card .lessons-count {
-  font-size: 13px;
-  color: var(--ink-mute);
-  margin-bottom: 20px;
-}
-.subject-progress {
-  margin-top: 16px;
-}
-.progress-track {
-  height: 6px;
-  background: var(--paper-deep);
-  border-radius: 3px;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-}
-.progress-fill {
-  height: 100%;
-  background: var(--subject-color);
-  transition: width 0.4s ease;
-}
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  margin-bottom: 6px;
-  color: var(--ink-mute);
-}
-.progress-label .val { color: var(--subject-color); font-weight: 600; }
-
-/* ===== Subject view ===== */
-.crumb {
-  background: none;
-  border: none;
-  color: var(--ink-mute);
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
-  margin-bottom: 32px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0;
-}
-.crumb:hover { color: var(--ink); }
-
-.subject-header {
-  margin-bottom: 48px;
-}
-.subject-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--subject-color);
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-.subject-h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 144, 'SOFT' 30;
-  font-size: clamp(48px, 7vw, 88px);
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  margin-bottom: 20px;
-}
-.subject-h1 em {
-  font-style: italic;
-  font-variation-settings: 'opsz' 144, 'SOFT' 100;
-  color: var(--subject-color);
-}
-.subject-meta {
-  display: flex;
-  gap: 32px;
-  font-size: 14px;
-  color: var(--ink-soft);
-  border-top: 1px solid var(--rule);
-  padding-top: 20px;
-  flex-wrap: wrap;
-}
-.subject-meta strong { color: var(--ink); font-weight: 600; }
-
-.subject-actions {
-  margin-top: 24px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* ===== Lesson list ===== */
-.lessons-list {
-  display: grid;
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-.lesson-row {
-  background: var(--card);
-  padding: 20px 24px;
-  display: grid;
-  grid-template-columns: 56px 1fr auto;
-  gap: 20px;
-  align-items: center;
-  cursor: pointer;
-  transition: background 0.1s;
-  border: none;
-  width: 100%;
-  text-align: left;
-  font-family: inherit;
-  color: var(--ink);
-}
-.lesson-row:hover { background: var(--paper-deep); }
-.lesson-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--subject-color);
-  letter-spacing: -0.02em;
-}
-.lesson-info h4 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 36;
-  font-size: 19px;
-  letter-spacing: -0.005em;
-  margin-bottom: 4px;
-}
-.lesson-info .meta {
-  font-size: 13px;
-  color: var(--ink-mute);
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-.lesson-info .meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-mute); }
-.lesson-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  padding: 4px 8px;
-  border-radius: var(--r-sm);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.status-pill.done { background: var(--subject-soft); color: var(--subject-color); }
-.status-pill.todo { background: var(--paper-deep); color: var(--ink-mute); }
-
-/* ===== Lesson view ===== */
-.lesson-article {
-  max-width: 720px;
-  margin: 0 auto;
-}
-.lesson-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--subject-color);
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-.lesson-title {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 144, 'SOFT' 30;
-  font-size: clamp(36px, 5.5vw, 56px);
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  margin-bottom: 16px;
-}
-.lesson-title em {
-  font-style: italic;
-  font-variation-settings: 'opsz' 144, 'SOFT' 100;
-}
-.lesson-meta {
-  display: flex;
-  gap: 16px;
-  font-size: 13px;
-  color: var(--ink-mute);
-  padding-bottom: 28px;
-  margin-bottom: 40px;
-  border-bottom: 1px solid var(--rule);
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.02em;
-}
-
-.lesson-content {
-  font-size: 17px;
-  line-height: 1.75;
-  color: var(--ink);
-}
-.lesson-content h2 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 60;
-  font-size: 28px;
-  letter-spacing: -0.01em;
-  margin: 48px 0 16px;
-  color: var(--ink);
-}
-.lesson-content h3 {
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-variation-settings: 'opsz' 36;
-  font-size: 20px;
-  margin: 32px 0 12px;
-}
-.lesson-content p { margin-bottom: 18px; }
-.lesson-content ul, .lesson-content ol {
-  margin: 0 0 20px 0;
-  padding-left: 24px;
-}
-.lesson-content li { margin-bottom: 8px; }
-.lesson-content strong { font-weight: 700; color: var(--ink); }
-.lesson-content em { font-style: italic; color: var(--ink-soft); }
-.lesson-content code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.92em;
-  background: var(--paper-deep);
-  padding: 1px 6px;
-  border-radius: 4px;
-  color: var(--subject-color);
-}
-.lesson-content .formula {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
-  background: var(--paper-deep);
-  border-left: 3px solid var(--subject-color);
-  padding: 14px 18px;
-  margin: 18px 0;
-  border-radius: 0 var(--r) var(--r) 0;
-  overflow-x: auto;
-}
-.lesson-content .example {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 18px 22px;
-  margin: 24px 0;
-  position: relative;
-}
-.lesson-content .example::before {
-  content: "Exemple";
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  font-weight: 700;
-  color: var(--subject-color);
-  background: var(--card);
-  padding: 0 8px;
-  position: absolute;
-  top: -8px;
-  left: 14px;
-}
-.lesson-content .tip {
-  background: var(--highlight);
-  border-radius: var(--r);
-  padding: 14px 18px;
-  margin: 20px 0;
-  font-size: 15px;
-  color: var(--ink);
-}
-.lesson-content .tip::before {
-  content: "💡 ";
-}
-
-/* fiche de révision */
-.review-card {
-  margin: 56px 0 40px;
-  background: var(--subject-soft);
-  border-radius: var(--r-lg);
-  padding: 32px;
-  position: relative;
-}
-.review-card::before {
-  content: "Fiche de révision";
-  position: absolute;
-  top: -10px;
-  left: 24px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  font-weight: 700;
-  color: var(--subject-color);
-  background: var(--paper);
-  padding: 2px 12px;
-  border-radius: var(--r-sm);
-}
-.review-card h3 {
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-size: 22px;
-  margin-bottom: 16px;
-  color: var(--subject-color);
-}
-.review-card ul {
-  list-style: none;
-  padding: 0;
-}
-.review-card li {
-  padding: 8px 0 8px 24px;
-  position: relative;
-  font-size: 15px;
-}
-.review-card li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--subject-color);
-  font-weight: 700;
-}
-
-/* vidéos */
-.videos-section {
-  margin: 48px 0;
-  padding: 28px 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.videos-section h3 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 22px;
-  margin-bottom: 16px;
-}
-.video-link {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--rule);
-  text-decoration: none;
-  color: var(--ink);
-  transition: padding-left 0.15s;
-}
-.video-link:last-child { border-bottom: none; }
-.video-link:hover { padding-left: 6px; color: var(--subject-color); }
-.video-link .play {
-  width: 36px; height: 36px;
-  background: var(--subject-soft);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--subject-color);
-  flex-shrink: 0;
-}
-.video-link .title { font-weight: 500; flex: 1; }
-.video-link .arrow { color: var(--ink-mute); }
-
-/* boutons d'action en bas de leçon */
-.lesson-footer {
-  margin-top: 56px;
-  padding-top: 32px;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  padding: 12px 20px;
-  border-radius: var(--r);
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid transparent;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.05s, background 0.15s;
-}
-.btn:active { transform: translateY(1px); }
-.btn-primary {
-  background: var(--subject-color, var(--ink));
-  color: white;
-}
-.btn-primary:hover { filter: brightness(1.08); }
-.btn-ghost {
-  background: var(--paper-deep);
-  color: var(--ink);
-  border-color: var(--rule);
-}
-.btn-ghost:hover { background: var(--rule); }
-.btn-done {
-  background: var(--subject-soft);
-  color: var(--subject-color);
-  border-color: transparent;
-}
-
-/* ===== QUIZ ===== */
-.quiz-shell {
-  max-width: 680px;
-  margin: 0 auto;
-}
-.quiz-header {
-  margin-bottom: 36px;
-}
-.quiz-progress {
-  height: 4px;
-  background: var(--paper-deep);
-  border-radius: 2px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-.quiz-progress-fill {
-  height: 100%;
-  background: var(--subject-color);
-  transition: width 0.3s ease;
-}
-.quiz-counter {
-  display: flex;
-  justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--ink-mute);
-  letter-spacing: 0.04em;
-}
-.quiz-counter strong { color: var(--subject-color); }
-
-.quiz-question {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 60;
-  font-size: clamp(24px, 3vw, 32px);
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-  margin: 32px 0 36px;
-}
-.quiz-type-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--subject-color);
-  background: var(--subject-soft);
-  padding: 3px 10px;
-  border-radius: var(--r-sm);
-  display: inline-block;
-  margin-bottom: 16px;
-}
-
-.quiz-options {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 32px;
-}
-.quiz-option {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 16px 20px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 16px;
-  text-align: left;
-  color: var(--ink);
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  transition: border-color 0.1s, background 0.1s;
-}
-.quiz-option:hover { border-color: var(--subject-color); background: var(--paper-deep); }
-.quiz-option .letter {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: var(--paper-deep);
-  border: 1px solid var(--rule);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 700;
-  flex-shrink: 0;
-  color: var(--ink-soft);
-}
-.quiz-option.selected {
-  border-color: var(--subject-color);
-  background: var(--subject-soft);
-}
-.quiz-option.selected .letter {
-  background: var(--subject-color);
-  color: white;
-  border-color: var(--subject-color);
-}
-.quiz-option.correct {
-  border-color: var(--ok);
-  background: rgba(42, 110, 74, 0.08);
-}
-.quiz-option.correct .letter { background: var(--ok); color: white; border-color: var(--ok); }
-.quiz-option.incorrect {
-  border-color: var(--bad);
-  background: rgba(184, 58, 46, 0.08);
-}
-.quiz-option.incorrect .letter { background: var(--bad); color: white; border-color: var(--bad); }
-.quiz-option.disabled { cursor: not-allowed; opacity: 0.6; }
-.quiz-option.disabled:hover { border-color: var(--rule); background: var(--card); }
-
-.quiz-input {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 14px 18px;
-  font-family: inherit;
-  font-size: 16px;
-  width: 100%;
-  color: var(--ink);
-  outline: none;
-  margin-bottom: 24px;
-}
-.quiz-input:focus { border-color: var(--subject-color); }
-
-.quiz-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
-
-.quiz-explanation {
-  background: var(--paper-deep);
-  border-left: 3px solid var(--subject-color);
-  padding: 14px 18px;
-  margin: 16px 0 24px;
-  border-radius: 0 var(--r) var(--r) 0;
-  font-size: 14px;
-  line-height: 1.6;
-}
-.quiz-explanation strong { color: var(--subject-color); }
-
-/* résultats */
-.result {
-  text-align: center;
-  padding: 40px 20px;
-}
-.result-score {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 144, 'SOFT' 50;
-  font-size: clamp(80px, 14vw, 160px);
-  letter-spacing: -0.04em;
-  line-height: 0.9;
-  margin-bottom: 8px;
-  color: var(--subject-color);
-}
-.result-score em {
-  font-style: italic;
-  font-variation-settings: 'opsz' 144, 'SOFT' 100;
-}
-.result-pct {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  color: var(--ink-mute);
-  letter-spacing: 0.06em;
-  margin-bottom: 32px;
-}
-.result-message {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-variation-settings: 'opsz' 60, 'SOFT' 100;
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 40px;
-  max-width: 520px;
-  margin-left: auto; margin-right: auto;
-  line-height: 1.4;
-}
-.result-breakdown {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-}
-.result-stat {
-  text-align: center;
-}
-.result-stat .n {
-  font-family: 'Fraunces', serif;
-  font-size: 32px;
-  font-weight: 600;
-  display: block;
-  line-height: 1;
-}
-.result-stat .l {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--ink-mute);
-  text-transform: uppercase;
-  margin-top: 6px;
-}
-.result-stat.good .n { color: var(--ok); }
-.result-stat.bad .n { color: var(--bad); }
-
-.result-review {
-  text-align: left;
-  margin-top: 56px;
-  padding-top: 40px;
-  border-top: 1px solid var(--rule);
-}
-.result-review h3 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 24px;
-  margin-bottom: 24px;
-}
-.review-item {
-  padding: 20px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.review-item:last-child { border-bottom: none; }
-.review-item .q {
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.review-item .your-ans, .review-item .correct-ans {
-  font-size: 14px;
-  margin: 6px 0;
-  padding-left: 16px;
-}
-.review-item .your-ans.right { color: var(--ok); }
-.review-item .your-ans.wrong { color: var(--bad); text-decoration: line-through; }
-.review-item .correct-ans { color: var(--ok); font-weight: 600; }
-.review-item .expl {
-  font-size: 14px;
-  color: var(--ink-soft);
-  margin-top: 10px;
-  background: var(--paper-deep);
-  padding: 10px 14px;
-  border-radius: var(--r-sm);
-}
-
-.result-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 40px;
-  flex-wrap: wrap;
-}
-
-/* ===== Dashboard ===== */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 48px;
-}
-.dash-stat {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 24px;
-}
-.dash-stat .label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  color: var(--ink-mute);
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
-.dash-stat .value {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-variation-settings: 'opsz' 72;
-  font-size: 44px;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.dash-stat .value em {
-  font-style: italic;
-  font-variation-settings: 'opsz' 144, 'SOFT' 100;
-  font-size: 0.7em;
-  color: var(--ink-mute);
-  font-weight: 400;
-}
-
-.dash-subject-row {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 16px 20px;
-  margin-bottom: 8px;
-  display: grid;
-  grid-template-columns: 1fr 2fr auto;
-  gap: 20px;
-  align-items: center;
-}
-.dash-subject-row .name {
-  font-family: 'Fraunces', serif;
-  font-size: 18px;
-  font-weight: 500;
-}
-.dash-subject-row .name .dot {
-  display: inline-block;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-.dash-subject-row .nums {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--ink-mute);
-  text-align: right;
-  min-width: 80px;
-}
-
-/* ===== Search results ===== */
-.search-results {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 16px;
-  margin-bottom: 32px;
-}
-.search-result {
-  padding: 14px;
-  border-radius: var(--r);
-  cursor: pointer;
-  transition: background 0.1s;
-  border: none;
-  width: 100%;
-  text-align: left;
-  background: none;
-  color: var(--ink);
-  font-family: inherit;
-  display: block;
-}
-.search-result:hover { background: var(--paper-deep); }
-.search-result .subj-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: var(--r-sm);
-  margin-right: 10px;
-  color: white;
-}
-.search-result .title {
-  font-weight: 600;
-  font-size: 15px;
-}
-.no-results {
-  text-align: center;
-  padding: 32px;
-  color: var(--ink-mute);
-  font-style: italic;
-}
-
-/* ===== Encouragement banner ===== */
-.banner {
-  background: var(--highlight);
-  border-radius: var(--r-lg);
-  padding: 20px 24px;
-  margin: 32px 0;
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 18px;
-  font-variation-settings: 'opsz' 36, 'SOFT' 100;
-  color: var(--ink);
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 720px) {
-  .header-inner { padding: 10px 16px; gap: 8px; }
-  .brand { font-size: 18px; }
-  .search { width: 100px; padding: 6px 10px 6px 28px; }
-  .search:focus { width: 140px; }
-  .search-icon { left: 8px; }
-  .search-icon svg { width: 14px; height: 14px; }
-  .icon-btn { padding: 6px 8px; font-size: 12px; }
-  .main { padding: 24px 16px 60px; }
-  .lesson-row {
-    grid-template-columns: 40px 1fr;
-    gap: 12px;
-    padding: 16px;
-  }
-  .lesson-status { grid-column: 1 / -1; }
-  .subject-meta { gap: 16px; font-size: 13px; }
-  .review-card { padding: 24px 18px; }
-  .dash-subject-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .dash-subject-row .nums { text-align: left; }
-  .section-head { flex-direction: column; align-items: flex-start; gap: 4px; }
-}
-
-/* respect du reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* focus visible accessible */
-*:focus-visible {
-  outline: 2px solid var(--subject-color, var(--ink));
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -1299,7 +188,10 @@ function setSubjectVars(subjectId) {
     francais: { c: 'var(--fr)', s: 'var(--fr-soft)' },
     histoiregeo: { c: 'var(--hg)', s: 'var(--hg-soft)' },
     emc: { c: 'var(--emc)', s: 'var(--emc-soft)' },
-    sciences: { c: 'var(--sci)', s: 'var(--sci-soft)' },
+    sciences: { c: 'var(--svt)', s: 'var(--svt-soft)' },
+    physiquechimie: { c: 'var(--pc)', s: 'var(--pc-soft)' },
+    svt: { c: 'var(--svt)', s: 'var(--svt-soft)' },
+    technologie: { c: 'var(--tech)', s: 'var(--tech-soft)' },
   };
   const cs = colors[subjectId] || { c: 'var(--ink)', s: 'var(--paper-deep)' };
   return `--subject-color: ${cs.c}; --subject-soft: ${cs.s};`;
@@ -1821,7 +713,7 @@ function renderDashboard() {
         const s = DATA[sid];
         const p = subjectProgress(sid);
         const done = Object.keys(progress.revised[sid] || {}).length;
-        const colors = { maths:'var(--maths)', francais:'var(--fr)', histoiregeo:'var(--hg)', emc:'var(--emc)', sciences:'var(--sci)' };
+        const colors = { maths:'var(--maths)', francais:'var(--fr)', histoiregeo:'var(--hg)', emc:'var(--emc)', physiquechimie:'var(--pc)', svt:'var(--svt)', technologie:'var(--tech)' };
         return `
           <div class="dash-subject-row" style="--subject-color: ${colors[sid]};">
             <div class="name"><span class="dot" style="background:${colors[sid]};"></span>${s.name}</div>
@@ -1858,7 +750,7 @@ function renderSearch() {
       }
     });
   });
-  const colors = { maths:'var(--maths)', francais:'var(--fr)', histoiregeo:'var(--hg)', emc:'var(--emc)', sciences:'var(--sci)' };
+  const colors = { maths:'var(--maths)', francais:'var(--fr)', histoiregeo:'var(--hg)', emc:'var(--emc)', physiquechimie:'var(--pc)', svt:'var(--svt)', technologie:'var(--tech)' };
   return `
     <div style="margin-bottom:24px; color:var(--ink-mute); font-size:14px;">${hits.length} résultat${hits.length>1?'s':''} pour « ${escapeHtml(state.searchQuery)} »</div>
     ${hits.length ? `
@@ -3737,13 +2629,13 @@ emc: {
 },
 
 /* ============================================================
-   SCIENCES — PHYSIQUE-CHIMIE, SVT, TECHNOLOGIE
+   PHYSIQUE-CHIMIE
    ============================================================ */
-sciences: {
-  name: 'Sciences',
-  code: 'SCI',
-  headline: 'Comprendre la <em>matière</em>, le vivant, la technique.',
-  intro: "L'épreuve de sciences au brevet porte sur deux des trois disciplines tirées au sort : physique-chimie, SVT, technologie. Les notions essentielles des trois matières sont ici réunies.",
+physiquechimie: {
+  name: 'Physique-Chimie',
+  code: 'PC',
+  headline: 'La matière, l\'énergie, <em>l\'univers</em>.',
+  intro: "Énergie et électricité, mouvements et forces, atomes et molécules, transformations chimiques, lumière et univers. Toutes les notions de physique-chimie du programme de 3e.",
   lessons: [
     {
       id: 'energie-electricite',
@@ -3996,6 +2888,187 @@ sciences: {
     },
 
     {
+      id: 'lumiere-univers',
+      title: 'Lumière, son, univers',
+      content: `
+<p>La <strong>lumière</strong> et le <strong>son</strong> sont des moyens par lesquels nous percevons le monde. À grande échelle, l'<strong>univers</strong> dans lequel nous vivons est immense — la physique nous donne les outils pour le mesurer.</p>
+
+<h2>La lumière</h2>
+
+<h3>Propagation</h3>
+<p>La lumière se propage en ligne droite dans un milieu homogène (air, eau, verre…). Sa vitesse dans le vide est d'environ <strong>300 000 km/s</strong> — la plus grande vitesse possible dans l'univers.</p>
+
+<h3>Sources lumineuses</h3>
+<ul>
+  <li><strong>Sources primaires</strong> : produisent leur propre lumière (Soleil, ampoule, étoile, flamme).</li>
+  <li><strong>Objets diffusants</strong> : renvoient la lumière reçue (la Lune, un mur, ton t-shirt).</li>
+</ul>
+
+<h3>Lumière blanche et spectre</h3>
+<p>La lumière blanche du Soleil est en réalité un mélange de toutes les couleurs. Un <strong>prisme</strong> ou un arc-en-ciel les sépare : c'est le <strong>spectre visible</strong> qui va du rouge au violet.</p>
+
+<h2>Le son</h2>
+
+<h3>Propagation</h3>
+<p>Le son est une <strong>onde mécanique</strong> qui se propage dans un milieu matériel (air, eau, solides). <strong>Le son ne se propage pas dans le vide</strong> (contrairement à la lumière).</p>
+
+<div class="formula">v(son dans l'air) ≈ 340 m/s</div>
+
+<p>C'est près d'un million de fois plus lent que la lumière. C'est pour cela qu'on voit l'éclair avant d'entendre le tonnerre.</p>
+
+<h3>Calcul d'une distance avec le son</h3>
+<div class="example">
+<p>Tu vois un éclair, et le tonnerre arrive 3 secondes plus tard. À quelle distance est tombé la foudre ?</p>
+<p><code>d = v × t = 340 × 3 ≈ 1020 m</code>, soit environ 1 km.</p>
+</div>
+
+<h2>L'univers</h2>
+
+<h3>Le système solaire</h3>
+<p>Notre étoile, le <strong>Soleil</strong>, est entourée de 8 planètes : Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune. Les 4 premières sont des planètes rocheuses (telluriques), les 4 dernières sont des planètes gazeuses.</p>
+
+<h3>Au-delà</h3>
+<p>Le Soleil n'est qu'une étoile parmi des centaines de milliards dans notre galaxie, la <strong>Voie lactée</strong>. Et il existe des milliards de galaxies dans l'univers observable.</p>
+
+<h3>L'année-lumière (a.l.)</h3>
+<p>Les distances dans l'univers sont gigantesques. On utilise une unité spécifique : l'<strong>année-lumière</strong>, qui est la distance parcourue par la lumière en un an.</p>
+
+<div class="formula">1 année-lumière ≈ 9 461 milliards de km</div>
+
+<div class="example">
+<p>L'étoile la plus proche du Soleil, Proxima du Centaure, est à environ 4,2 années-lumière. La lumière qu'on voit aujourd'hui est partie il y a 4,2 ans.</p>
+</div>
+
+<div class="tip">Quand tu regardes le ciel, tu regardes le passé : la lumière d'une étoile a mis des années (parfois des millions) à arriver jusqu'à toi. Le télescope est en quelque sorte une machine à voyager dans le temps.</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Lumière dans le vide : ≈ 300 000 km/s. Son dans l\'air : ≈ 340 m/s.',
+          'Le son a besoin d\'un milieu matériel ; la lumière non.',
+          'Lumière blanche = mélange de toutes les couleurs (spectre du rouge au violet).',
+          'Système solaire : Soleil + 8 planètes (4 telluriques + 4 gazeuses).',
+          'Année-lumière = distance parcourue par la lumière en 1 an, ≈ 9461 milliards de km.',
+        ],
+      },
+      videos: [
+        'lumière propagation spectre 3e physique',
+        'son vitesse propagation brevet',
+        'système solaire univers année lumière',
+      ],
+      quiz: [
+        { type: 'qcm', question: "La vitesse de la lumière dans le vide est environ :", options: ['340 m/s', '3 000 km/s', '300 000 km/s', '300 000 km/h'], correct: 2, explain: "300 000 km/s, soit environ 1 milliard de km/h. C'est la vitesse limite de l'univers." },
+        { type: 'qcm', question: "Le son se propage :", options: ["Dans n'importe quel milieu y compris le vide", "Uniquement dans un milieu matériel (air, eau, solide)", "Uniquement dans l'air", "À la vitesse de la lumière"], correct: 1, explain: "Le son est une onde mécanique : il a besoin d'un milieu pour vibrer. Dans le vide spatial, aucun son." },
+        { type: 'qcm', question: "Tu entends le tonnerre 5 secondes après l'éclair. La foudre est à environ :", options: ['170 m', '500 m', '1700 m', '5 km'], correct: 2, explain: "d = v × t = 340 × 5 = 1700 m, soit 1,7 km. Astuce : ≈ 1 km toutes les 3 secondes." },
+        { type: 'tf', question: "La Lune est une source primaire de lumière.", correct: false, explain: "La Lune diffuse la lumière du Soleil. Elle ne produit pas sa propre lumière." },
+        { type: 'qcm', question: "Combien de planètes dans le système solaire ?", options: ['7', '8', '9', '12'], correct: 1, explain: "8 planètes depuis 2006 (Pluton a été reclassée en planète naine)." },
+        { type: 'qcm', question: "Une année-lumière est :", options: ["Une unité de temps", "Une unité de distance", "Une unité de vitesse", "Une planète"], correct: 1, explain: "C'est une distance : celle parcourue par la lumière en un an, environ 9461 milliards de km." },
+        { type: 'short', question: "Comment appelle-t-on notre galaxie ?", accepted: ['voie lactée', 'la voie lactée', 'voie lactee'], explain: "Notre galaxie est la Voie lactée. Elle contient des centaines de milliards d'étoiles." },
+      ],
+    },
+
+    {
+      id: 'transformations-combustions',
+      title: 'Transformations chimiques et combustions',
+      content: `
+<p>Une <strong>transformation chimique</strong> est un processus dans lequel des <strong>réactifs</strong> se transforment en <strong>produits</strong>. Les atomes ne disparaissent pas — ils se réarrangent.</p>
+
+<h2>Vocabulaire</h2>
+<ul>
+  <li><strong>Réactifs</strong> : les espèces chimiques de départ.</li>
+  <li><strong>Produits</strong> : les espèces formées à l'arrivée.</li>
+  <li><strong>Équation de réaction</strong> : écriture symbolique avec une flèche.</li>
+</ul>
+
+<div class="formula">Réactifs → Produits</div>
+
+<h2>Conservation des éléments</h2>
+<p>Tous les atomes des réactifs se retrouvent dans les produits, en même quantité. Une équation chimique doit donc être <strong>équilibrée</strong> : autant d'atomes de chaque sorte de part et d'autre de la flèche.</p>
+
+<div class="example">
+<p>Combustion du méthane :</p>
+<p><code>CH₄ + 2 O₂ → CO₂ + 2 H₂O</code></p>
+<p>À gauche : 1 C, 4 H, 4 O. À droite : 1 C, 4 H (dans 2 H₂O), 4 O (2 dans CO₂ et 2 dans H₂O). Équilibré ✓.</p>
+</div>
+
+<h2>Les combustions</h2>
+<p>Une <strong>combustion</strong> est une réaction entre un combustible (bois, gaz, essence) et un comburant (en général le <strong>dioxygène O₂</strong>). Elle libère de l'énergie sous forme de chaleur et souvent de lumière.</p>
+
+<h3>Combustion complète et incomplète</h3>
+<ul>
+  <li><strong>Complète</strong> : assez de dioxygène. Produits : CO₂ et H₂O. Flamme bleue, propre.</li>
+  <li><strong>Incomplète</strong> : manque de dioxygène. Produits dangereux : <strong>monoxyde de carbone CO</strong> (toxique) et particules (suie). Flamme jaune.</li>
+</ul>
+
+<div class="tip">Le monoxyde de carbone (CO) est un gaz <strong>incolore, inodore et mortel</strong>. Il est responsable de nombreuses intoxications dues à des chaudières mal entretenues. La détection passe par des détecteurs spécifiques.</div>
+
+<h2>Acides et métaux</h2>
+<p>Beaucoup d'acides (acide chlorhydrique, acide sulfurique…) réagissent avec les métaux pour donner :</p>
+<ul>
+  <li>Un <strong>sel</strong> (en solution).</li>
+  <li>Du <strong>dihydrogène H₂</strong> (gaz).</li>
+</ul>
+
+<div class="example">
+<p>Acide chlorhydrique + fer :</p>
+<p><code>2 HCl + Fe → FeCl₂ + H₂</code></p>
+</div>
+
+<h2>Solutions ioniques</h2>
+<p>Quand un sel se dissout dans l'eau, il se sépare en <strong>ions</strong>. L'eau salée, l'eau du robinet, le sang sont des solutions ioniques. Elles conduisent l'électricité, contrairement à l'eau pure.</p>
+
+<div class="example">
+<p>Le sel de cuisine NaCl se dissout en : Na⁺ + Cl⁻.</p>
+</div>
+
+<h2>Tests d'identification</h2>
+<p>Quelques tests classiques à connaître pour le brevet :</p>
+<ul>
+  <li><strong>Eau</strong> : sulfate de cuivre anhydre (blanc) devient bleu.</li>
+  <li><strong>Dioxyde de carbone CO₂</strong> : eau de chaux trouble.</li>
+  <li><strong>Dihydrogène H₂</strong> : « pop » avec une allumette.</li>
+  <li><strong>Dioxygène O₂</strong> : ravive une bûchette incandescente.</li>
+</ul>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Transformation chimique : réactifs → produits. Conservation des atomes.',
+          'Équation équilibrée : autant de chaque atome de chaque côté.',
+          'Combustion complète : CO₂ + H₂O. Incomplète : CO toxique + suie.',
+          'Acide + métal → sel + H₂.',
+          'Tests : eau de chaux (CO₂), sulfate de cuivre (eau), pop (H₂), bûchette (O₂).',
+        ],
+      },
+      videos: [
+        'combustion complète incomplète 3e',
+        'équation chimique équilibrer brevet',
+        'tests identification gaz physique chimie',
+      ],
+      quiz: [
+        { type: 'qcm', question: "Lors d'une combustion complète, quels produits se forment ?", options: ["Du dihydrogène et de l'eau", "Du dioxyde de carbone et de l'eau", "Du monoxyde de carbone et de l'azote", "De la suie et du dioxygène"], correct: 1, explain: "Combustion complète : CO₂ + H₂O. Incomplète : produit du CO (toxique) et de la suie." },
+        { type: 'qcm', question: "Quel gaz trouble l'eau de chaux ?", options: ['Le dioxygène', 'Le dihydrogène', 'Le dioxyde de carbone', 'Le monoxyde de carbone'], correct: 2, explain: "Eau de chaux + CO₂ → trouble. C'est le test classique du dioxyde de carbone." },
+        { type: 'tf', question: "Le monoxyde de carbone est inodore et mortel.", correct: true, explain: "C'est ce qui le rend particulièrement dangereux : on ne sent rien venir. D'où l'importance des détecteurs." },
+        { type: 'qcm', question: "Dans l'équation CH₄ + 2 O₂ → CO₂ + 2 H₂O, combien d'atomes d'oxygène à gauche ?", options: ['1', '2', '4', '6'], correct: 2, explain: "2 molécules de O₂, soit 2 × 2 = 4 atomes d'oxygène." },
+        { type: 'qcm', question: "Le test du dihydrogène est :", options: ["L'eau de chaux trouble", "Un « pop » à l'allumette", "Une bûchette qui se rallume", "Une coloration bleue"], correct: 1, explain: "Le H₂ détone légèrement au contact d'une flamme : c'est le « pop »." },
+        { type: 'qcm', question: "Le sel NaCl, dissous dans l'eau, donne :", options: ['Na et Cl atomes', 'NaCl molécules', 'Na⁺ et Cl⁻ ions', 'Cl₂ et Na₂'], correct: 2, explain: "Le sel se dissocie en cations Na⁺ et anions Cl⁻ dans l'eau." },
+        { type: 'short', question: "Quel gaz est responsable de la combustion (comburant) ?", accepted: ['dioxygène', 'le dioxygène', 'o2', 'O2', 'o₂'], explain: "Le dioxygène O₂, présent dans l'air à 21%. Sans dioxygène, pas de combustion." },
+      ],
+    },
+
+  ],
+},
+
+/* ============================================================
+   SVT — SCIENCES DE LA VIE ET DE LA TERRE
+   ============================================================ */
+svt: {
+  name: 'SVT',
+  code: 'SVT',
+  headline: 'Le <em>vivant</em>, le corps, la planète.',
+  intro: "Génétique et hérédité, reproduction, système immunitaire, évolution, risques géologiques. Toutes les notions de Sciences de la Vie et de la Terre du programme de 3e.",
+  lessons: [
+    {
       id: 'genetique-adn',
       title: 'Génétique : chromosomes et ADN',
       content: `
@@ -4142,6 +3215,268 @@ sciences: {
     },
 
     {
+      id: 'reproduction-heredite',
+      title: 'Reproduction et hérédité',
+      content: `
+<p>La <strong>reproduction sexuée</strong> permet la transmission de l'information génétique d'une génération à l'autre. Chaque enfant hérite de la moitié de l'ADN de chacun de ses parents — c'est pourquoi il ressemble à ses parents tout en étant unique.</p>
+
+<h2>Les organes reproducteurs</h2>
+
+<h3>Chez l'homme</h3>
+<p>Les <strong>testicules</strong> produisent les <strong>spermatozoïdes</strong> et l'hormone <strong>testostérone</strong>. La production démarre à la puberté et continue toute la vie.</p>
+
+<h3>Chez la femme</h3>
+<p>Les <strong>ovaires</strong> contiennent dès la naissance les ovules en formation. Chaque mois, à partir de la puberté, un ovule mûrit et est libéré : c'est l'<strong>ovulation</strong>. Les ovaires produisent aussi les hormones œstrogène et progestérone.</p>
+
+<h2>Le cycle menstruel</h2>
+<p>Chez la femme, le cycle dure environ <strong>28 jours</strong> :</p>
+<ul>
+  <li>Jour 1 à 5 : règles (élimination de la muqueuse utérine).</li>
+  <li>Jour ~14 : ovulation.</li>
+  <li>Sans fécondation, nouvelle élimination → règles.</li>
+</ul>
+
+<h2>La fécondation</h2>
+<p>Lors d'un rapport sexuel non protégé, les spermatozoïdes remontent jusqu'aux trompes utérines. Si un ovule est présent, <strong>un seul spermatozoïde fusionne avec lui</strong> : c'est la fécondation. Une cellule-œuf se forme.</p>
+
+<p>Cette cellule-œuf contient <strong>46 chromosomes</strong> : 23 du père + 23 de la mère.</p>
+
+<h2>Du zygote au bébé</h2>
+<p>La cellule-œuf se divise rapidement, se déplace vers l'utérus et s'y fixe : c'est la <strong>nidation</strong>. L'embryon se forme. À 8 semaines, on parle de fœtus. La grossesse dure environ 9 mois.</p>
+
+<h2>Hérédité et caractères</h2>
+<p>L'<strong>hérédité</strong> est la transmission des caractères des parents aux enfants. Mais l'<strong>environnement</strong> (alimentation, sport, soleil, vie quotidienne) joue aussi.</p>
+
+<div class="example">
+<p>La taille adulte dépend des gènes ET de l'alimentation pendant l'enfance. Le bronzage est dû au soleil (environnement), pas aux gènes.</p>
+</div>
+
+<h2>Les caractères héréditaires</h2>
+<p>On distingue :</p>
+<ul>
+  <li><strong>Caractères héréditaires</strong> : groupe sanguin, couleur des yeux, certaines maladies.</li>
+  <li><strong>Caractères acquis</strong> : connaissances, langue parlée, cicatrices. Ils ne se transmettent pas.</li>
+</ul>
+
+<h2>Contraception et IST</h2>
+<p>Diverses méthodes permettent d'éviter une grossesse non désirée :</p>
+<ul>
+  <li><strong>Préservatif</strong> : seule méthode qui protège aussi contre les IST (infections sexuellement transmissibles).</li>
+  <li><strong>Pilule contraceptive</strong>.</li>
+  <li>Stérilet, implant, patch…</li>
+  <li>Contraception d'urgence (« pilule du lendemain ») en cas d'urgence.</li>
+</ul>
+
+<div class="tip">Sur internet circule l'idée que les caractères « acquis » se transmettraient. C'est faux. Tes enfants n'hériteront pas de tes tatouages, de tes blessures, ni de ta capacité à parler français. Seuls les gènes se transmettent.</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Testicules → spermatozoïdes. Ovaires → ovules.',
+          'Cycle menstruel ≈ 28 jours, ovulation vers le 14ᵉ jour.',
+          'Fécondation : 1 spermatozoïde + 1 ovule → cellule-œuf (46 chromosomes).',
+          'Héréditaire (transmis) vs acquis (pas transmis).',
+          'Préservatif = seule contraception qui protège aussi des IST.',
+        ],
+      },
+      videos: [
+        'reproduction humaine SVT 3e brevet',
+        'cycle menstruel ovulation explication',
+        'fécondation grossesse cours',
+      ],
+      quiz: [
+        { type: 'qcm', question: "Les ovules sont produits par :", options: ['Les testicules', 'Les ovaires', "L'utérus", "Les trompes"], correct: 1, explain: "Les ovaires contiennent les ovules dès la naissance et en libèrent un par cycle à partir de la puberté." },
+        { type: 'qcm', question: "Le cycle menstruel dure en moyenne :", options: ['7 jours', '14 jours', '28 jours', '60 jours'], correct: 2, explain: "Environ 28 jours, avec ovulation vers le 14ᵉ jour. Mais cela varie selon les femmes." },
+        { type: 'tf', question: "Plusieurs spermatozoïdes peuvent féconder un même ovule.", correct: false, explain: "Un seul spermatozoïde parvient à pénétrer l'ovule. Une fois entré, l'ovule se ferme aux autres." },
+        { type: 'qcm', question: "Quelle méthode de contraception protège aussi des IST ?", options: ['La pilule', 'Le préservatif', "L'implant", "Le stérilet"], correct: 1, explain: "Seul le préservatif (masculin ou féminin) protège contre les IST en plus d'empêcher la grossesse." },
+        { type: 'qcm', question: "Le bronzage est :", options: ["Un caractère héréditaire", "Un caractère acquis", "Une mutation génétique", "Une maladie"], correct: 1, explain: "Le bronzage est dû au soleil, donc à l'environnement. Il ne se transmet pas aux enfants." },
+        { type: 'tf', question: "L'embryon devient un fœtus à partir de la 8ᵉ semaine.", correct: true, explain: "À 8 semaines, l'embryon a pris forme humaine. Avant : embryon. Après : fœtus." },
+        { type: 'short', question: "Comment s'appelle la fixation de l'œuf dans l'utérus ?", accepted: ['nidation', 'la nidation'], explain: "La nidation a lieu environ 7 jours après la fécondation. Elle marque le début de la grossesse." },
+      ],
+    },
+
+    {
+      id: 'evolution-biodiversite',
+      title: 'Évolution et biodiversité',
+      content: `
+<p>Les espèces vivantes que l'on observe aujourd'hui sont le résultat d'une <strong>évolution longue de plus de 3,5 milliards d'années</strong>. Cette idée, théorisée par Charles Darwin au XIX<sup>e</sup> siècle, est aujourd'hui un fondement de la biologie.</p>
+
+<h2>La biodiversité</h2>
+<p>La <strong>biodiversité</strong> désigne la diversité des êtres vivants à plusieurs niveaux :</p>
+<ul>
+  <li><strong>Diversité des espèces</strong> : on en a recensé environ 1,9 million, on en estime plusieurs millions encore inconnues.</li>
+  <li><strong>Diversité génétique</strong> : variations à l'intérieur d'une même espèce (différences entre individus).</li>
+  <li><strong>Diversité des écosystèmes</strong> : forêts, océans, déserts, savanes…</li>
+</ul>
+
+<h2>Classification du vivant</h2>
+<p>Les biologistes classent les espèces selon leurs <strong>caractères communs</strong>, témoins d'une ancêtre commune. On parle de classification phylogénétique.</p>
+
+<h3>Quelques grands groupes</h3>
+<ul>
+  <li><strong>Vertébrés</strong> : poissons, amphibiens, reptiles, oiseaux, mammifères.</li>
+  <li><strong>Invertébrés</strong> : insectes, mollusques, vers, méduses…</li>
+  <li><strong>Plantes</strong>, <strong>champignons</strong>, <strong>bactéries</strong>.</li>
+</ul>
+
+<h2>La théorie de l'évolution</h2>
+<p>Selon Darwin, les espèces évoluent par <strong>sélection naturelle</strong> :</p>
+<ol>
+  <li>Dans une population, les individus ne sont pas tous identiques (variations génétiques).</li>
+  <li>Certaines variations donnent un <strong>avantage</strong> pour survivre et se reproduire dans l'environnement.</li>
+  <li>Les individus avantagés ont plus de descendants. Leurs gènes deviennent plus fréquents.</li>
+  <li>Au fil des générations, l'espèce change.</li>
+</ol>
+
+<div class="example">
+<p>Les girafes ancestrales avaient des cous de longueurs variées. Celles au cou plus long pouvaient atteindre plus de feuilles, mieux survivre, mieux se reproduire. Génération après génération, les girafes au long cou sont devenues majoritaires.</p>
+</div>
+
+<h2>Les preuves de l'évolution</h2>
+<ul>
+  <li><strong>Fossiles</strong> : ils montrent que les espèces ont changé au cours du temps. Certains, comme les dinosaures, ont disparu.</li>
+  <li><strong>Anatomie comparée</strong> : la main humaine, l'aile de chauve-souris et la nageoire de baleine ont la même structure osseuse — ancêtre commun.</li>
+  <li><strong>Génétique</strong> : plus deux espèces sont proches dans l'évolution, plus leur ADN se ressemble. Notre ADN est à 98% identique à celui du chimpanzé.</li>
+</ul>
+
+<h2>Les crises biologiques</h2>
+<p>L'histoire de la vie est marquée par plusieurs <strong>extinctions massives</strong> : disparition rapide d'un grand nombre d'espèces. Les plus connues :</p>
+<ul>
+  <li>Fin du Permien (-252 millions d'années) : ~96% des espèces marines disparaissent.</li>
+  <li>Fin du Crétacé (-66 millions d'années) : disparition des dinosaures non-aviens, après l'impact d'un astéroïde.</li>
+</ul>
+
+<h2>L'humain et la biodiversité aujourd'hui</h2>
+<p>L'activité humaine (déforestation, pollution, changement climatique) accélère fortement les extinctions. On parle de <strong>6<sup>e</sup> extinction de masse</strong>. Préserver la biodiversité est devenu un enjeu majeur du XXI<sup>e</sup> siècle.</p>
+
+<div class="tip">L'évolution n'est pas un « progrès » vers la perfection. Une espèce simple peut être très bien adaptée à son milieu. Les bactéries sont parmi les organismes les plus « réussis » sur Terre : elles existent depuis 3,5 milliards d'années.</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Biodiversité : diversité des espèces, des gènes, des écosystèmes.',
+          'Évolution par sélection naturelle (Darwin) : les mieux adaptés transmettent leurs gènes.',
+          'Preuves : fossiles, anatomie comparée, génétique.',
+          'Extinctions de masse : 5 majeures dans l\'histoire. La 6ᵉ serait en cours, causée par l\'humain.',
+          'ADN humain ≈ 98% identique à celui du chimpanzé : preuve d\'ancêtre commun.',
+        ],
+      },
+      videos: [
+        'évolution Darwin sélection naturelle 3e',
+        'biodiversité menaces brevet SVT',
+        'classification vivant phylogénétique',
+      ],
+      quiz: [
+        { type: 'qcm', question: "Qui a théorisé l'évolution par sélection naturelle ?", options: ['Mendel', 'Pasteur', 'Darwin', 'Newton'], correct: 2, explain: "Charles Darwin, dans « L'Origine des espèces » (1859)." },
+        { type: 'tf', question: "L'évolution conduit toujours vers des espèces plus complexes.", correct: false, explain: "Non. Certaines espèces deviennent plus simples si c'est plus adapté à leur environnement (parasites par exemple)." },
+        { type: 'qcm', question: "Notre ADN est identique à celui du chimpanzé à environ :", options: ['50%', '75%', '98%', '99,99%'], correct: 2, explain: "Environ 98%, ce qui prouve la proximité évolutive entre humains et grands singes." },
+        { type: 'qcm', question: "Les dinosaures ont disparu il y a environ :", options: ['252 millions d\'années', '66 millions d\'années', '10 millions d\'années', '300 000 ans'], correct: 1, explain: "66 millions d'années : extinction de la fin du Crétacé, due notamment à un astéroïde." },
+        { type: 'qcm', question: "La biodiversité concerne :", options: ["Seulement les espèces", "Espèces, gènes et écosystèmes", "Uniquement les animaux", "Les océans uniquement"], correct: 1, explain: "Trois niveaux : diversité des espèces, des gènes dans une espèce, des écosystèmes." },
+        { type: 'tf', question: "Les fossiles sont des preuves de l'évolution.", correct: true, explain: "Les fossiles montrent que les espèces ont changé au cours du temps, et que certaines ont disparu (dinosaures par exemple)." },
+        { type: 'short', question: "Comment appelle-t-on l'extinction massive actuelle ?", accepted: ['6ème extinction', "6e extinction", "sixième extinction", "sixieme extinction", "6ème extinction de masse"], explain: "La 6ᵉ extinction de masse, causée par l'activité humaine. Bien plus rapide que les précédentes." },
+      ],
+    },
+
+    {
+      id: 'risques-geologiques',
+      title: 'Risques géologiques et activité interne',
+      content: `
+<p>La Terre est une planète <strong>active</strong> : la surface bouge sans cesse, des séismes la secouent, des volcans entrent en éruption. Ces phénomènes peuvent menacer les populations.</p>
+
+<h2>La structure interne de la Terre</h2>
+<ul>
+  <li><strong>Croûte</strong> : couche solide en surface (0-100 km d'épaisseur).</li>
+  <li><strong>Manteau</strong> : roches en fusion partielle, qui bougent lentement.</li>
+  <li><strong>Noyau</strong> : très chaud, métallique, externe liquide et interne solide.</li>
+</ul>
+
+<h2>La tectonique des plaques</h2>
+<p>La croûte terrestre est divisée en <strong>plaques</strong> qui se déplacent de quelques cm par an. C'est la <strong>tectonique des plaques</strong>. Aux frontières des plaques se produisent les séismes et le volcanisme.</p>
+
+<h3>Trois types de frontières</h3>
+<ul>
+  <li><strong>Divergente</strong> : les plaques s'éloignent. Création de croûte nouvelle (dorsales océaniques).</li>
+  <li><strong>Convergente</strong> : les plaques entrent en collision. Formation de chaînes de montagnes, ou plongée d'une plaque sous l'autre (subduction).</li>
+  <li><strong>Coulissante</strong> : les plaques glissent latéralement (faille de San Andreas en Californie).</li>
+</ul>
+
+<h2>Les séismes</h2>
+<p>Un <strong>séisme</strong> est causé par la libération soudaine d'énergie le long d'une faille. La cassure se propage en <strong>ondes sismiques</strong> qui font trembler le sol.</p>
+
+<h3>Vocabulaire</h3>
+<ul>
+  <li><strong>Foyer (ou hypocentre)</strong> : point dans la croûte où le séisme se déclenche.</li>
+  <li><strong>Épicentre</strong> : point à la surface, à la verticale du foyer.</li>
+  <li><strong>Magnitude</strong> : intensité du séisme (échelle de Richter ouverte).</li>
+</ul>
+
+<h2>Le volcanisme</h2>
+<p>Un <strong>volcan</strong> est un point de la surface où remonte du <strong>magma</strong> (roches en fusion) venu du manteau. Quand il sort, on parle de <strong>lave</strong>.</p>
+
+<h3>Deux types principaux</h3>
+<ul>
+  <li><strong>Volcanisme effusif</strong> : lave fluide qui coule (volcans hawaïens). Peu dangereux mais destructeur.</li>
+  <li><strong>Volcanisme explosif</strong> : lave épaisse, accumulation de pression, explosions violentes (Vésuve, Mont St-Helens). Très dangereux : nuées ardentes, cendres.</li>
+</ul>
+
+<h2>Aléa, risque, vulnérabilité</h2>
+<p>Trois notions à distinguer :</p>
+<ul>
+  <li><strong>Aléa</strong> : probabilité qu'un phénomène se produise (séisme, éruption…).</li>
+  <li><strong>Vulnérabilité</strong> : capacité d'une population et de ses infrastructures à résister.</li>
+  <li><strong>Risque</strong> : combinaison des deux. Un aléa fort dans une zone peu peuplée ≠ un aléa fort dans une métropole.</li>
+</ul>
+
+<div class="formula">Risque = Aléa × Vulnérabilité</div>
+
+<h2>La prévention</h2>
+<ul>
+  <li><strong>Surveiller</strong> : sismographes, capteurs sur les volcans.</li>
+  <li><strong>Aménager</strong> : normes parasismiques, plans d'évacuation.</li>
+  <li><strong>Informer</strong> : éducation des populations, exercices.</li>
+  <li><strong>Cartographier</strong> les zones à risque (plans de prévention des risques).</li>
+</ul>
+
+<div class="tip">On ne peut pas <strong>prédire</strong> un séisme (date et lieu précis). Mais on peut identifier les <strong>zones à risque</strong>, surveiller, et préparer les populations. C'est la différence entre prédiction (impossible) et prévention (possible).</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Structure : croûte, manteau, noyau (externe liquide + interne solide).',
+          'Tectonique des plaques : 3 types de frontières (divergente, convergente, coulissante).',
+          'Séisme : foyer (en profondeur), épicentre (en surface), magnitude.',
+          'Volcans : effusifs (fluide, hawaïen) vs explosifs (épais, péléen).',
+          'Risque = aléa × vulnérabilité. On ne prédit pas, on prévient.',
+        ],
+      },
+      videos: [
+        'tectonique des plaques 3e SVT brevet',
+        'séisme volcan formation explication',
+        'risques géologiques prévention',
+      ],
+      quiz: [
+        { type: 'qcm', question: "L'enveloppe la plus externe de la Terre est :", options: ['Le noyau', 'Le manteau', 'La croûte', 'La lithosphère externe'], correct: 2, explain: "La croûte est la couche solide qui forme la surface terrestre, sous nos pieds." },
+        { type: 'qcm', question: "L'épicentre d'un séisme se trouve :", options: ["Dans le manteau", "Au foyer", "À la surface, à la verticale du foyer", "Au centre de la Terre"], correct: 2, explain: "Foyer = point souterrain. Épicentre = projection en surface. C'est là que les dégâts sont souvent maximaux." },
+        { type: 'tf', question: "Les plaques tectoniques se déplacent de plusieurs mètres par an.", correct: false, explain: "Quelques centimètres par an seulement (à peu près la vitesse de croissance des ongles)." },
+        { type: 'qcm', question: "Un volcan effusif émet :", options: ["De la lave épaisse explosive", "De la lave fluide qui coule", "Uniquement des cendres", "Aucune lave"], correct: 1, explain: "Lave fluide = volcanisme effusif (Hawaï). Lave épaisse = explosif (Vésuve)." },
+        { type: 'qcm', question: "Le risque est :", options: ["Le synonyme d'aléa", "L'aléa multiplié par la vulnérabilité", "La magnitude d'un séisme", "Le nombre de victimes"], correct: 1, explain: "Risque = aléa (probabilité) × vulnérabilité (exposition humaine). Une éruption au milieu d'un désert = aléa fort, risque faible." },
+        { type: 'tf', question: "On peut prédire avec exactitude la date d'un séisme.", correct: false, explain: "Impossible aujourd'hui de prédire l'heure et le lieu exact d'un séisme. On peut seulement identifier les zones à risque et prévenir." },
+        { type: 'short', question: "Comment s'appelle la roche en fusion à l'intérieur de la Terre ?", accepted: ['magma', 'le magma'], explain: "Le magma devient lave une fois sorti à la surface." },
+      ],
+    },
+  ],
+},
+
+/* ============================================================
+   TECHNOLOGIE
+   ============================================================ */
+technologie: {
+  name: 'Technologie',
+  code: 'TECH',
+  headline: 'Concevoir, programmer, <em>connecter</em>.',
+  intro: "Programmation, objets connectés et réseaux, chaîne d'énergie et d'information, CAO et prototypage. Tout ce qu'il faut maîtriser en technologie au brevet.",
+  lessons: [
+    {
       id: 'programmation-algorithme',
       title: 'Programmation et algorithmique',
       content: `
@@ -4229,6 +3564,302 @@ sciences: {
         { type: 'qcm', question: "Le débogage consiste à :", options: ['Lancer un programme', 'Trouver et corriger des erreurs', 'Effacer un programme', "Concevoir l'interface"], correct: 1, explain: "Du mot anglais « bug » (insecte) : éliminer les erreurs du programme." },
         { type: 'qcm', question: "Une boucle « tant que » s'arrête :", options: ["Au bout d'un nombre fixe de tours", "Quand la condition devient fausse", "Toujours après 10 tours", "Jamais"], correct: 1, explain: "« Tant que » répète tant que la condition est vraie. Dès qu'elle devient fausse, on sort de la boucle." },
         { type: 'short', question: "Comment s'appellent les objets reliés à Internet (montres, frigos…) ?", accepted: ['objets connectés', 'iot', "internet des objets"], explain: "Les objets connectés (IoT en anglais : Internet of Things) sont une catégorie en pleine croissance." },
+      ],
+    },
+
+    {
+      id: 'objets-connectes-reseaux',
+      title: 'Objets connectés et réseaux',
+      content: `
+<p>De plus en plus d'objets de la vie quotidienne sont <strong>connectés à Internet</strong> et communiquent entre eux : smartphones, montres, voitures, frigos, thermostats. C'est l'<strong>Internet des objets</strong> (IoT, Internet of Things).</p>
+
+<h2>Qu'est-ce qu'un objet connecté ?</h2>
+<p>Un objet connecté est un appareil qui :</p>
+<ul>
+  <li>Possède des <strong>capteurs</strong> pour mesurer (température, lumière, mouvement…).</li>
+  <li>Possède un <strong>processeur</strong> pour traiter l'information.</li>
+  <li>Communique via un <strong>réseau</strong> (Wi-Fi, Bluetooth, 4G/5G…).</li>
+  <li>Souvent contrôlable à distance par une application.</li>
+</ul>
+
+<h2>Les réseaux informatiques</h2>
+
+<h3>Définition</h3>
+<p>Un <strong>réseau</strong> est un ensemble de machines (ordinateurs, smartphones, objets connectés…) reliées entre elles pour échanger des informations.</p>
+
+<h3>Types de réseaux par taille</h3>
+<ul>
+  <li><strong>PAN</strong> (Personal Area Network) : Bluetooth, NFC. Quelques mètres.</li>
+  <li><strong>LAN</strong> (Local Area Network) : réseau d'une maison, d'un collège. Une centaine de mètres.</li>
+  <li><strong>WAN</strong> (Wide Area Network) : Internet. À l'échelle mondiale.</li>
+</ul>
+
+<h2>Internet</h2>
+<p>Internet est le <strong>réseau mondial</strong> qui relie tous les autres réseaux. Il fonctionne grâce à un système d'<strong>adresses IP</strong> (chaque appareil connecté a une adresse unique).</p>
+
+<h3>Le Web</h3>
+<p>Attention à ne pas confondre :</p>
+<ul>
+  <li><strong>Internet</strong> = l'infrastructure (les câbles, les routeurs, les protocoles).</li>
+  <li><strong>Web</strong> = un service sur Internet : les pages HTML qu'on consulte via un navigateur.</li>
+</ul>
+
+<p>Internet permet aussi l'email, la visioconférence, les jeux en ligne, le streaming…</p>
+
+<h2>Protocoles</h2>
+<p>Un <strong>protocole</strong> est un langage que les machines suivent pour se comprendre. Quelques exemples :</p>
+<ul>
+  <li><strong>HTTP / HTTPS</strong> : pour les pages Web (HTTPS = sécurisé).</li>
+  <li><strong>SMTP, IMAP</strong> : pour les emails.</li>
+  <li><strong>Wi-Fi</strong>, <strong>Bluetooth</strong> : pour la connexion sans fil.</li>
+</ul>
+
+<h2>Sécurité et vie privée</h2>
+<p>Les objets connectés posent des questions :</p>
+<ul>
+  <li><strong>Sécurité</strong> : peuvent être piratés. Une caméra connectée mal sécurisée peut être espionnée.</li>
+  <li><strong>Vie privée</strong> : ils collectent beaucoup de données personnelles.</li>
+  <li><strong>RGPD</strong> : règlement européen qui protège les données personnelles (depuis 2018).</li>
+</ul>
+
+<h3>Bonnes pratiques</h3>
+<ul>
+  <li>Utiliser des mots de passe forts et uniques.</li>
+  <li>Mettre à jour les appareils régulièrement.</li>
+  <li>Désactiver ce qui n'est pas nécessaire (caméras, micros).</li>
+  <li>Lire les conditions d'utilisation.</li>
+</ul>
+
+<div class="tip">Quand un service en ligne est gratuit, il y a souvent un dicton : « si c'est gratuit, c'est toi le produit ». Les données collectées (recherches, déplacements, préférences) sont la vraie source de revenus de nombreuses entreprises.</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Objet connecté : capteurs + processeur + connexion réseau.',
+          'PAN (Bluetooth) < LAN (Wi-Fi maison) < WAN (Internet mondial).',
+          'Internet = infrastructure ; Web = service de pages HTML.',
+          'Adresse IP : identifie chaque appareil sur Internet.',
+          'Protocoles : HTTPS (web sécurisé), Wi-Fi, Bluetooth, SMTP (email).',
+        ],
+      },
+      videos: [
+        'objets connectés IoT brevet techno',
+        'différence Internet et Web',
+        'protocoles réseau HTTP HTTPS explication',
+      ],
+      quiz: [
+        { type: 'qcm', question: "Internet et le Web, c'est :", options: ['La même chose', "Internet est l'infrastructure, le Web un service dessus", "Le Web a été inventé avant Internet", "Aucun rapport"], correct: 1, explain: "Internet est le réseau (créé dans les années 1970). Le Web est un service sur Internet (créé en 1989 par Tim Berners-Lee)." },
+        { type: 'qcm', question: "Le « S » de HTTPS signifie :", options: ['Site', 'Server', 'Secure (sécurisé)', 'System'], correct: 2, explain: "HTTPS = HTTP Secure. Les données échangées sont chiffrées, ce qui protège des espionnages." },
+        { type: 'qcm', question: "Bluetooth est typiquement utilisé pour un :", options: ['PAN', 'LAN', 'WAN', 'Internet'], correct: 0, explain: "Bluetooth couvre quelques mètres, c'est un Personal Area Network." },
+        { type: 'tf', question: "Une adresse IP est unique pour chaque appareil connecté à Internet à un moment donné.", correct: true, explain: "Sur Internet, deux appareils ne peuvent pas avoir la même adresse IP au même moment, sinon les données seraient mélangées." },
+        { type: 'qcm', question: "Le RGPD est :", options: ["Un protocole réseau", "Un règlement européen sur les données personnelles", "Un logiciel", "Une marque d'ordinateur"], correct: 1, explain: "Règlement Général sur la Protection des Données, en vigueur depuis 2018 dans l'UE." },
+        { type: 'qcm', question: "Un objet connecté contient typiquement :", options: ["Juste une batterie", "Des capteurs et une connexion réseau", "Uniquement un écran", "Une carte SIM obligatoirement"], correct: 1, explain: "Capteurs pour mesurer, processeur pour traiter, connexion (Wi-Fi, Bluetooth…) pour communiquer." },
+        { type: 'short', question: "Quel sigle anglais désigne l'Internet des objets ?", accepted: ['iot', 'IoT', 'internet of things'], explain: "IoT = Internet of Things. Désigne l'écosystème d'objets connectés." },
+      ],
+    },
+
+    {
+      id: 'chaine-energie-information',
+      title: 'Chaîne d\'énergie et chaîne d\'information',
+      content: `
+<p>Quand on analyse un objet technique (un sèche-cheveux, une trottinette électrique, un robot…), on peut le décomposer selon deux <strong>chaînes</strong> qui interagissent : la chaîne d'énergie et la chaîne d'information.</p>
+
+<h2>La chaîne d'énergie</h2>
+<p>Décrit comment l'<strong>énergie</strong> circule dans l'objet, depuis sa source jusqu'à son utilisation finale.</p>
+
+<div class="formula">Alimenter → Distribuer → Convertir → Transmettre → Agir</div>
+
+<ul>
+  <li><strong>Alimenter</strong> : prise électrique, batterie, panneau solaire.</li>
+  <li><strong>Distribuer</strong> : interrupteur, fil électrique, relais.</li>
+  <li><strong>Convertir</strong> : moteur (énergie électrique → mécanique), ampoule (électrique → lumineuse), résistance chauffante (électrique → thermique).</li>
+  <li><strong>Transmettre</strong> : engrenages, courroies, axes.</li>
+  <li><strong>Agir</strong> : action finale (faire avancer, chauffer, éclairer).</li>
+</ul>
+
+<div class="example">
+<p>Trottinette électrique : <em>batterie → câble → moteur → roue → mouvement</em>.</p>
+</div>
+
+<h2>La chaîne d'information</h2>
+<p>Décrit comment l'<strong>information</strong> circule pour <strong>commander</strong> et <strong>contrôler</strong> la chaîne d'énergie.</p>
+
+<div class="formula">Acquérir → Traiter → Communiquer</div>
+
+<ul>
+  <li><strong>Acquérir</strong> : <strong>capteurs</strong> qui mesurent (température, lumière, distance, vitesse…).</li>
+  <li><strong>Traiter</strong> : un <strong>microcontrôleur</strong> ou processeur prend des décisions selon un programme.</li>
+  <li><strong>Communiquer</strong> : envoie des ordres à la chaîne d'énergie, affiche des informations à l'utilisateur.</li>
+</ul>
+
+<h2>Capteurs et actionneurs</h2>
+
+<h3>Capteurs (chaîne d'info)</h3>
+<p>Mesurent une grandeur physique et la transforment en signal électrique :</p>
+<ul>
+  <li>Capteur de température (thermistance).</li>
+  <li>Capteur de lumière (photorésistance).</li>
+  <li>Capteur de mouvement (PIR), de présence.</li>
+  <li>Capteur de distance (ultrasons, infrarouge).</li>
+</ul>
+
+<h3>Actionneurs (chaîne d'énergie)</h3>
+<p>Réalisent une action en consommant de l'énergie :</p>
+<ul>
+  <li>Moteur.</li>
+  <li>Ampoule, LED.</li>
+  <li>Haut-parleur.</li>
+  <li>Résistance chauffante.</li>
+</ul>
+
+<h2>Comment les chaînes interagissent</h2>
+
+<div class="example">
+<p>Lampe à détecteur de mouvement :</p>
+<ul>
+  <li>Chaîne d'info : le détecteur (capteur) repère un mouvement, le programme décide d'allumer, l'ordre est envoyé.</li>
+  <li>Chaîne d'énergie : l'alimentation électrique passe par l'interrupteur, traverse la résistance, et l'ampoule s'allume.</li>
+</ul>
+</div>
+
+<h2>Modélisation</h2>
+<p>Quand on conçoit un objet technique, on dessine ces chaînes sous forme de <strong>diagrammes en blocs</strong>. Chaque bloc représente une fonction ; les flèches montrent comment l'énergie et l'information circulent.</p>
+
+<div class="tip">Un robot est un objet où les deux chaînes sont particulièrement développées : il a des capteurs (vue, toucher), un microcontrôleur qui décide, et des actionneurs (moteurs, bras) qui réalisent l'action.</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Chaîne d\'énergie : Alimenter → Distribuer → Convertir → Transmettre → Agir.',
+          'Chaîne d\'information : Acquérir → Traiter → Communiquer.',
+          'Capteur : mesure (info). Actionneur : agit (énergie).',
+          'Le microcontrôleur traite l\'information selon un programme.',
+          'Les deux chaînes interagissent : l\'info commande l\'énergie.',
+        ],
+      },
+      videos: [
+        'chaîne énergie information technologie 3e',
+        'capteur actionneur différence',
+        'objet technique diagramme blocs',
+      ],
+      quiz: [
+        { type: 'qcm', question: "Le moteur d'une trottinette appartient à :", options: ['La chaîne d\'information', 'La chaîne d\'énergie', 'Aux deux', "Ni l'une ni l'autre"], correct: 1, explain: "Le moteur convertit l'énergie électrique en mécanique. C'est un actionneur de la chaîne d'énergie." },
+        { type: 'qcm', question: "Un capteur de température fait partie de :", options: ['La chaîne d\'énergie', 'La chaîne d\'information', 'Les deux', "Aucune"], correct: 1, explain: "Le capteur acquiert une information (la température). C'est la première étape de la chaîne d'info." },
+        { type: 'qcm', question: "Une LED est un :", options: ['Capteur', 'Actionneur', 'Microcontrôleur', 'Protocole'], correct: 1, explain: "La LED transforme l'énergie électrique en lumière. C'est un actionneur." },
+        { type: 'tf', question: "La chaîne d'information ne consomme jamais d'énergie.", correct: false, explain: "Capteurs et microcontrôleurs consomment de l'énergie (faiblement). Mais leur fonction est de traiter l'info, pas d'agir directement." },
+        { type: 'qcm', question: "Dans la chaîne d'énergie, l'étape « Convertir » correspond typiquement à :", options: ["L'interrupteur", "Le moteur ou l'ampoule", "La batterie", "La prise"], correct: 1, explain: "Convertir = passer d'une forme d'énergie à une autre. Moteur (élec → méca), ampoule (élec → lumineuse), résistance (élec → thermique)." },
+        { type: 'qcm', question: "Dans une lampe à détection de mouvement, qui décide d'allumer ?", options: ["L'ampoule", "Le détecteur seul", "Le microcontrôleur (selon son programme)", "L'utilisateur uniquement"], correct: 2, explain: "Le capteur détecte, le microcontrôleur décide selon son programme, et envoie un ordre à la lampe (actionneur)." },
+        { type: 'short', question: "Comment appelle-t-on un composant électronique qui exécute un programme dans un objet technique ?", accepted: ['microcontrôleur', 'le microcontrôleur', 'microcontroleur', 'microprocesseur', 'processeur'], explain: "Le microcontrôleur (ou microprocesseur) traite l'information et commande la chaîne d'énergie." },
+      ],
+    },
+
+    {
+      id: 'cao-prototypage',
+      title: 'CAO, prototypage et impression 3D',
+      content: `
+<p>Pour concevoir un objet, les techniciens utilisent des outils numériques : la <strong>CAO</strong> (Conception Assistée par Ordinateur) permet de modéliser un objet en 3D, puis de le <strong>prototyper</strong> avant de le produire en série.</p>
+
+<h2>La démarche de projet</h2>
+<p>Du besoin à l'objet, le chemin classique :</p>
+<ol>
+  <li><strong>Identifier le besoin</strong> et les contraintes (cahier des charges).</li>
+  <li><strong>Imaginer</strong> des solutions (croquis, recherches).</li>
+  <li><strong>Modéliser</strong> sur ordinateur (CAO).</li>
+  <li><strong>Prototyper</strong> : créer un premier exemplaire pour tester.</li>
+  <li><strong>Tester</strong>, ajuster.</li>
+  <li><strong>Produire</strong>, distribuer.</li>
+</ol>
+
+<h2>La CAO (Conception Assistée par Ordinateur)</h2>
+<p>Avec un logiciel de CAO (Solidworks, Onshape, FreeCAD, Tinkercad au collège), on dessine un objet en 3D. Avantages :</p>
+<ul>
+  <li>Visualiser sous tous les angles.</li>
+  <li>Modifier facilement.</li>
+  <li>Vérifier les dimensions, les assemblages.</li>
+  <li>Simuler le fonctionnement avant la fabrication.</li>
+</ul>
+
+<h2>Le cahier des charges</h2>
+<p>Document qui décrit ce que doit faire l'objet :</p>
+<ul>
+  <li><strong>Fonctions principales</strong> : à quoi il doit servir.</li>
+  <li><strong>Fonctions contraintes</strong> : prix, taille, poids, écologie, ergonomie, normes…</li>
+</ul>
+
+<div class="example">
+<p>Cahier des charges d'une lampe de bureau :</p>
+<ul>
+  <li>Fonction principale : éclairer une zone de travail.</li>
+  <li>Contraintes : pesant moins de 1 kg, alimentation 230 V, prix < 25 €, design moderne, durée de vie > 5 ans.</li>
+</ul>
+</div>
+
+<h2>Le prototypage</h2>
+<p>Un <strong>prototype</strong> est un premier exemplaire de l'objet, construit pour tester les choix de conception. Il peut être :</p>
+<ul>
+  <li>En carton (maquette rapide).</li>
+  <li>Imprimé en 3D.</li>
+  <li>Usiné dans un atelier.</li>
+</ul>
+
+<h2>L'impression 3D</h2>
+<p>L'<strong>impression 3D</strong> (fabrication additive) consiste à <strong>déposer de la matière couche par couche</strong> pour former un objet. Idéale pour le prototypage rapide.</p>
+
+<h3>Comment ça marche</h3>
+<ol>
+  <li>Modélisation 3D sur ordinateur.</li>
+  <li>Conversion en fichier <strong>STL</strong>.</li>
+  <li>Découpe en couches fines (logiciel de slicing → fichier G-code).</li>
+  <li>L'imprimante 3D suit les instructions et fait fondre le filament (plastique PLA, ABS…) couche par couche.</li>
+</ol>
+
+<h3>Avantages</h3>
+<ul>
+  <li>Rapide pour des petites pièces.</li>
+  <li>Formes complexes possibles.</li>
+  <li>Pas de moule à créer.</li>
+</ul>
+
+<h3>Limites</h3>
+<ul>
+  <li>Lent pour des grandes pièces.</li>
+  <li>Coût élevé en grande série (l'industrie préfère le moulage par injection).</li>
+  <li>Résistance mécanique limitée.</li>
+</ul>
+
+<h2>La fabrication soustractive</h2>
+<p>À l'inverse de l'impression 3D (additive), la fabrication soustractive consiste à <strong>enlever de la matière</strong> à partir d'un bloc :</p>
+<ul>
+  <li><strong>Fraisage</strong> : avec une fraiseuse.</li>
+  <li><strong>Découpe laser</strong> : pour les plaques.</li>
+  <li><strong>Découpe à eau</strong>.</li>
+</ul>
+
+<div class="tip">L'impression 3D ne remplacera pas la production de masse, mais elle révolutionne le prototypage et la <strong>personnalisation</strong> (prothèses sur mesure, pièces de rechange spécifiques). Elle se développe aussi pour la construction (maisons imprimées) et la médecine.</div>
+      `,
+      review: {
+        title: 'À retenir',
+        points: [
+          'Démarche : besoin → cahier des charges → CAO → prototype → tests → production.',
+          'CAO = conception 3D sur ordinateur.',
+          'Cahier des charges : fonctions principales + contraintes.',
+          'Impression 3D = additive (ajout de matière par couches). Usinage = soustractive (enlève).',
+          'Fichier STL = format pour impression 3D. G-code = instructions pour l\'imprimante.',
+        ],
+      },
+      videos: [
+        'CAO conception assistée ordinateur 3e',
+        'impression 3D fonctionnement explication',
+        'cahier des charges technologie brevet',
+      ],
+      quiz: [
+        { type: 'qcm', question: "La CAO signifie :", options: ["Conception Assistée par Ordinateur", "Construction Avec Outils", "Création Avancée d'Objet", "Calcul Assisté par Ordinateur"], correct: 0, explain: "Conception Assistée par Ordinateur : modélisation 3D d'un objet sur logiciel." },
+        { type: 'qcm', question: "L'impression 3D fonctionne par :", options: ["Découpe laser", "Dépôt de matière couche par couche", "Moulage", "Soudure"], correct: 1, explain: "C'est la fabrication additive : l'imprimante dépose de la matière fondue couche après couche." },
+        { type: 'tf', question: "Le cahier des charges décrit ce que l'objet doit faire et ses contraintes.", correct: true, explain: "C'est exactement ça : fonctions principales (ce que l'objet doit faire) + fonctions contraintes (prix, taille, normes…)." },
+        { type: 'qcm', question: "Quel format de fichier est typiquement utilisé pour l'impression 3D ?", options: ['JPG', 'STL', 'PDF', 'MP3'], correct: 1, explain: "Le format STL décrit la géométrie 3D. Il est ensuite « slicé » en G-code que l'imprimante exécute." },
+        { type: 'qcm', question: "L'impression 3D est particulièrement adaptée :", options: ["À la production de masse", "Au prototypage et aux petites séries", "Uniquement à la construction de maisons", "À la fabrication de circuits électroniques"], correct: 1, explain: "Pour la grande série, le moulage par injection reste beaucoup plus rapide et économique. La 3D excelle pour le prototypage." },
+        { type: 'qcm', question: "La fraiseuse réalise une fabrication :", options: ["Additive", "Soustractive", "Chimique", "Optique"], correct: 1, explain: "Une fraiseuse enlève de la matière à partir d'un bloc : c'est de la fabrication soustractive." },
+        { type: 'short', question: "Comment appelle-t-on le premier exemplaire d'un objet, créé pour tester la conception ?", accepted: ['prototype', 'un prototype', 'le prototype'], explain: "Le prototype permet de valider les choix de conception avant la production de série." },
       ],
     },
   ],
